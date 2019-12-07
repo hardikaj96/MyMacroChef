@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MyMacroChef is a premium food delivery service 
+    with the mission to bring affordable and healthy meals to as many people 
+    as possible.">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="../../Vendors/CSS/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../Vendors/CSS/Grid.css">
+    <link rel="stylesheet" type="text/css" href="../../Vendors/CSS/ionicons.css">
+    <link rel="stylesheet" type="text/css" href="../../Vendors/CSS/animate.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/style.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/queries.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="../JS/script.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400">
+    <title>MyMacroChef</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="..\Favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="..\Favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="..\Favicons/favicon-16x16.png">
+    <link rel="manifest" href="..\Favicons/site.webmanifest">
+    <link rel="mask-icon" href="..\Favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="..\Favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="..\Favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <header class="headerother">
+        <nav>
+            <div class="row">
+                <img src="../IMG/logo-white.png" alt="Logo" class="logo" srcset="">
+                <img src="../IMG/logo.png" alt="Logo" class="logo-black" srcset="">
+                <ul class="main-nav js--main-nav">
+                    <li><a href="profile.html">My Profile</a></li>
+					<li><a href="preferences.html">My Perferences</a></li>
+					<li><a href="biiling.html">My Billing Info</a></li>
+					<li><a href="calendar.html">My Calendar</a></li>
+                    <li><a href="addressbook.html">My Address Book</a></li>
+                    <li><a href="signout.html">Signout</a></li>
+                </ul>
+                <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+            </div>
+        </nav>
+    </header>
+
+	<section class="section-form">
+        <div class="row">
+            <h2><span id="pref_recom">Preferences<span></h2>
+        </div><br>
+            <form target="calendar.html" mthod="post" action="#">
+                
+				<table class="table" id="preftable">
+					<thead>
+					  <tr>
+						<td></td>
+						<th scope="col">Breakfast</th>
+						<th scope="col">Lunch</th>
+						<th scope="col">Snack</th>
+						<th scope="col">Dinner</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr>
+						<th scope="row">Monday</th>
+						<script>
+							window.onload = function(){
+								const url = 'https://mymacrochefs3.s3.amazonaws.com/Data/data.json';
+
+								fetch(url)  
+								  .then(  
+									function(response) {  
+									  if (response.status !== 200) {  
+										console.warn('Looks like there was a problem. Status Code: ' + 
+										  response.status);  
+										return;  
+									  }
+
+									  // Examine the text in the response  
+									  response.json().then(function(data) {  
+										//let dropdowns = document.getElementsByClassName('selectpicker');
+										let dropdowns = [];
+										let dropdownbf = document.getElementById('monbfcui');
+										dropdowns.push(dropdownbf);
+										let dropdownln = document.getElementById('monlncui');
+										dropdowns.push(dropdownln);
+										let dropdownsn = document.getElementById('monsncui');
+										dropdowns.push(dropdownsn);
+										let dropdowndn = document.getElementById('mondncui');
+										dropdowns.push(dropdowndn);
+										let option;
+										for (let i = 0; i < data.length; i++) {
+											for (let j = 0; j < data[i].length; j++) {
+											  option = document.createElement('option');
+											  option.text = data[i][j].name;
+											  option.setAttribute('data-tokens', data[i][j].name);
+											  option.setAttribute('KCal', data[i][j].kcal)
+											  dropdowns[i].add(option);
+											}
+										}
+										var $options;
+										$options = $("#monbfcui > option").clone();
+										$('#tuebfcui,#wedbfcui,#thrbfcui,#fribfcui,#satbfcui,#sunbfcui').append($options);
+										$options = $("#monlncui > option").clone();
+										$('#tuelncui,#wedlncui,#thrlncui,#frilncui,#satlncui,#sunlncui').append($options);
+										$options = $("#monsncui > option").clone();
+										$('#tuesncui,#wedsncui,#thrsncui,#frisncui,#satsncui,#sunsncui').append($options);
+										$options = $("#mondncui > option").clone();
+										$('#tuedncui,#weddncui,#thrdncui,#fridncui,#satdncui,#sundncui').append($options);
+										$('.selectpicker').selectpicker('refresh');
+									  });  
+									}  
+								  )  
+								  .catch(function(err) {  
+									console.error('Fetch Error -', err);  
+								  });
+	
+							}
+						</script>
+						<td><select id="monbfcui" name="monbfcui" class="selectpicker" data-live-search="true">
+						</select></td>
+						<td><select id="monlncui" name="monlncui" class="selectpicker" data-live-search="true">
+						</select></td>
+						<td><select id="monsncui" name="monsncui" class="selectpicker" data-live-search="true">
+						</select></td>
+						<td><select id="mondncui" name="mondncui" class="selectpicker" data-live-search="true">
+						</select></td>
+					  </tr>
+					  <tr>
+						<th scope="row">Tuesday</th>
+						<td><select id="tuebfcui" name="tuebfcui" class="selectpicker" data-live-search="true">
+						</select></td>
+						<td><select id="tuelncui" name="tuelncui" class="selectpicker" data-live-search="true">
+						</select></td>
+						<td><select id="tuesncui" name="tuesncui" class="selectpicker" data-live-search="true">
+						</select></td>
+						<td><select id="tuedncui" name="tuedncui" class="selectpicker" data-live-search="true">
+						</select></td>
+					  </tr>
+					  <tr>
+						<th scope="row">Wednesday</th>
+						<td><select id="wedbfcui" name="wedbfcui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="wedlncui" name="wedlncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="wedsncui" name="wedsncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="weddncui" name="weddncui" class="selectpicker" data-live-search="true">
+						</select></td>
+					  </tr>
+					  <tr>
+						<th scope="row">Thursday</th>
+						<td><select id="thrbfcui" name="thrbfcui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="thrlncui" name="thrlncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="thrsncui" name="thrsncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="thrdncui" name="thrdncui" class="selectpicker" data-live-search="true">
+						</select></td>
+					  </tr>
+					  <tr>
+						<th scope="row">Friday</th>
+						<td><select id="fribfcui" name="fribfcui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="frilncui" name="frilncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="frisncui" name="frisncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="fridncui" name="fridncui" class="selectpicker" data-live-search="true">
+						</select></td>
+					  </tr>
+					  <tr>
+						<th scope="row">Saturday</th>
+						<td><select id="satbfcui" name="satbfcui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="satlncui" name="satlncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="satsncui" name="satsncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="satdncui" name="satdncui" class="selectpicker" data-live-search="true">
+						</select></td>
+					  </tr>
+					  <tr>
+						<th scope="row">Sunday</th>
+						<td><select id="sunbfcui" name="sunbfcui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="sunlncui" name="sunlncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="sunsncui" name="sunsncui" class="selectpicker" data-live-search="true">
+						</select></tid= d>
+						<td><select id="sundncui" name="sundncui" class="selectpicker" data-live-search="true">
+						</select></td>
+					  </tr>
+					</tbody>
+				</table>
+				
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="">&nbsp;</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input id="sub_update" class="submit-button" type="submit" value="Update!">
+						<input id="sub_recom" class="submit-button" type="submit" value="Get New Recommendation">
+                    </div>
+                </div>
+            </form>
+	</section>
+	
+    <footer>
+        <div class="row">
+            <div class="col span-1-of-2">
+                <ul class="footer-nav">
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">iOS App</a></li>
+                    <li><a href="#">Android App</a></li>
+                </ul>
+            </div>
+            <div class="col span-1-of-2">
+                <ul class="social-links">
+                    <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                    <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                    <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
+                    <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <p>
+                Copyright &copy; 2019 MyMacroChef. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"></script>
+    <script src="../../Vendors/JS/jquery.waypoints.min.js"></script>
+</body>
+</html>
