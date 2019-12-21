@@ -15,6 +15,18 @@
     <link rel="stylesheet" type="text/css" href="../CSS/style.css">
     <link rel="stylesheet" type="text/css" href="../CSS/queries.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../lib/axios/dist/axios.standalone.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/rollups/sha256.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/components/hmac.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/components/enc-base64.js"></script>
+	<script type="text/javascript" src="../../lib/url-template/url-template.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/sigV4Client.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/apiGatewayClient.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/simpleHttpClient.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/utils.js"></script>
+	<script type="text/javascript" src="../../apigClient.js"></script>
+	<script src="../JS/billinginfo.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -34,17 +46,18 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-    <header class="headerother">
+    <header class="headerother" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../CSS/IMG/hero.jpg)">
         <nav>
             <div class="row">
-                <img src="../IMG/logo-white.png" alt="Logo" class="logo" srcset="">
-                <img src="../IMG/logo.png" alt="Logo" class="logo-black" srcset="">
-                <ul class="main-nav js--main-nav">
+                <img src="../IMG/logo-white.png" alt="Logo" class="logo" srcset="" onclick="window.open('livetracking.html', '_self');">
+                <img src="../IMG/logo.png" alt="Logo" class="logo-black" srcset="" onclick="window.open('livetracking.html', '_self');">
+                <ul id="redirect-bar" class="main-nav js--main-nav">
                     <li><a href="profile.html">My Profile</a></li>
-					<li><a href="preferences.html">My Perferences</a></li>
+					<li><a href="preferences.html">My Preferences</a></li>
 					<li><a href="calendar.html">My Calendar</a></li>
                     <li><a href="addressbook.html">My Address Book</a></li>
-					<li><a href="biiling.html">My Billing Info</a></li>
+					<li><a href="billinginfo.html">My Billing Info</a></li>
+					<li><a href="livetracking.html">Live Tracking</a></li>
                     <li><a href="signout.html">Signout</a></li>
                 </ul>
                 <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
@@ -56,8 +69,11 @@
         <div class="row">
             <h2>My Billing Info</h2>
         </div>
+		<div id="loading">
+		  <img id="loading-image" src="../IMG/loader.gif" alt="Loading..." />
+		</div>
         <div class="row">
-            <form mthod="post" class="contact-form" onSubmit="alert('Payment has been processed successfully.\nThanks!');window.location.href = 'calendar.html';return false;">
+            <form mthod="post" class="contact-form" onSubmit="return update();">
                 <div class="row">
                     <div class="col span-1-of-3">
                         <select class="selectpicker" id="planselect" required>
@@ -65,29 +81,6 @@
 							  <option value="weekly_plan">Billed weekly</option>
 							  <option value="daily_plan">Billed daily</option>
 						</select>
-						<script>
-							$( '#planselect').change(function() {
-								var msg = "";
-								var price="";
-								var bill="";
-								if(this.value=="monthly_plan") {
-									msg = "Saving $250 a month";
-									price = "$800"+"/month + tax".sub();
-									bill = "$"+(800+(800*10/100));
-								} else if(this.value=="weekly_plan") {
-									msg = "Saving $45 a week";
-									price = "$200"+"/week + tax".sub();
-									bill = "$"+(200+(200*10/100));
-								} else {
-									msg = "Must try, you won't regret it!";
-									price = "$35"+"/day + tax".sub();
-									bill = "$"+(35+(35*10/100));
-								}
-								document.getElementById("plan-msg").innerHTML = msg;
-								document.getElementById("plan-price").innerHTML = price;
-								document.getElementById("total-bill").innerHTML = bill;
-							});
-						</script>
 						<p class="help-block" id="plan-msg"></p>
                     </div>
 					<div class="col span-2-of-3">
@@ -102,46 +95,11 @@
                     <div class="col span-2-of-3">
 						<div class="col-xs-4 col-sm-4">
 							<span style="font-size:70%">Starting Date</span>
-							<input name="startdate" id="datepicker1" width="270" type="text" class="form-control"/>
+							<input name="startdate" id="startdate" width="270" type="text" class="form-control" autocomplete="off" disabled/>
 						</div>
 						<div class="col-xs-4 col-sm-4">
 							<span style="font-size:70%">Ending Date</span>
-							<input name="enddate" id="datepicker2" width="270" type="text" class="form-control"/>
-							<script>
-								$('#datepicker1, #datepicker2').datepicker({
-									format: 'mm/dd/yyyy',
-									startDate: '+1d',
-									todayHighlight: true,
-									autoclose: true
-								});
-								$('#datepicker1, #planselect').on('changeDate change', function() {
-									var selectedDate = $("#datepicker1")[0].value;
-									if (selectedDate != '') {
-											var startdate = new Date(selectedDate);
-											var enddate = new Date(); 
-											var plan = $( '#planselect').val();
-											if(plan=="monthly_plan") {
-												enddate.setDate(startdate.getDate() + 29);
-											} else if(plan=="weekly_plan") {
-												enddate.setDate(startdate.getDate() + 6);
-											} else {
-												enddate.setDate(startdate.getDate());
-											}
-											var dd = enddate.getDate();
-											var mm = enddate.getMonth() + 1; //January is 0!
-
-											var yyyy = enddate.getFullYear();
-											if (dd < 10) {
-											  dd = '0' + dd;
-											} 
-											if (mm < 10) {
-											  mm = '0' + mm;
-											} 
-											var enddate = mm + '/' + dd + '/' + yyyy;
-											$("#datepicker2")[0].value=enddate;
-									}
-								});
-							</script>
+							<input name="enddate" id="enddate" width="270" type="text" class="form-control" autocomplete="off" disabled/>
 						</div>
                     </div>
 				</div><br>
@@ -165,24 +123,25 @@
                         <div class="row">
 						   <div class="col-xs-3 col-sm-3">
 								<div class="form-group">
-									  <input type="text" name="creditCardEntry1" class="form-control card-input" maxlength="4" placeholder="xxxx">
+									  <input type="text" id="creditCardEntry1" name="creditCardEntry1" class="form-control card-input" autocomplete="off" maxlength="4" placeholder="xxxx">
 								</div>  
 						   </div>
 						   <div class="col-xs-3 col-sm-3">
 								<div class="form-group">
-									 <input type="text" class="form-control card-input" maxlength="4" name="creditCardEntry2" placeholder="xxxx">
+									 <input type="text" id="creditCardEntry2" class="form-control card-input" autocomplete="off" maxlength="4" name="creditCardEntry2" placeholder="xxxx">
 								</div>  
 						   </div>
 						   <div class="col-xs-3 col-sm-3">
 								<div class="form-group">
-									 <input type="text" class="form-control card-input" maxlength="4" name="creditCardEntry3" placeholder="xxxx">
+									 <input type="text" id="creditCardEntry3" class="form-control card-input" autocomplete="off" maxlength="4" name="creditCardEntry3" placeholder="xxxx">
 								</div>  
 							</div>
 						  <div class="col-xs-3 col-sm-3">
 								<div class="form-group">
-									 <input type="text" class="form-control card-input" maxlength="4" name="creditCardEntry4" placeholder="xxxx">
+									 <input type="text" id="creditCardEntry4" class="form-control card-input" autocomplete="off" maxlength="4" name="creditCardEntry4" placeholder="xxxx">
 								</div>  
 						  </div>
+						</div>
                     </div>
                 </div>
                 <div class="row">
@@ -193,14 +152,15 @@
                         <div class="row">
 						   <div class="col-xs-3 col-sm-3">
 								<div class="form-group">
-									  <input type="text" class="form-control card-input" maxlength="2" name="month" placeholder="MM">
+									  <input type="text" id="exp_mon" class="form-control card-input" autocomplete="off" maxlength="2" name="month" placeholder="MM">
 								</div>  
 						   </div>
 						   <div class="col-xs-3 col-sm-3">
 								<div class="form-group">
-									 <input type="text" class="form-control card-input" maxlength="4" name="year" placeholder="YYYY">
+									 <input type="text" id="exp_year" class="form-control card-input" autocomplete="off" maxlength="4" name="year" placeholder="YYYY">
 								</div>  
 						   </div>
+						</div>
                     </div>
                 </div>
 				<div class="row">
@@ -210,7 +170,7 @@
                     <div class="col span-2-of-3">
                         <div class="col-xs-4 col-sm-4">
 							<div class="form-group">
-								  <input type="text" class="form-control card-input" maxlength="4" name="cvv" placeholder="3 or 4 digit no.">
+								  <input type="text" id="cvv" class="form-control card-input" autocomplete="off" maxlength="4" name="cvv" placeholder="3 or 4 digit no.">
 							</div>  
 						</div>
                     </div>
@@ -475,7 +435,7 @@
                     <div class="col span-2-of-3">
                         <div class="col-xs-4 col-sm-4">
 							<div class="form-group">
-								  <input type="text" class="form-control card-input" minlength="5" maxlength="5" name="zip" placeholder="5 digit zip code">
+								  <input type="text" id="zip" class="form-control card-input" autocomplete="off" minlength="5" maxlength="5" name="zip" placeholder="5 digit zip code">
 							</div>  
 						</div>
                     </div>
@@ -488,7 +448,9 @@
                         <p id="total-bill"></p>
                     </div>
                 </div><br>
-				
+				<div class="row">
+					<p align="center" id="submitnote" hidden>User's billing info has been updated</p>
+				</div>
                 <div class="row">
                     <div class="col span-1-of-3">
                         <label for="">&nbsp;</label>
@@ -533,6 +495,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"></script>
     <script src="../../Vendors/JS/jquery.waypoints.min.js"></script>
-    <script src="../JS/script.js"></script>
 </body>
 </html>

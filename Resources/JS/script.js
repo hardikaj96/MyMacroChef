@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	
 	// For the sticky navigation
     $('.js--section-features').waypoint(function(direction) {
         if(direction == "down") {
@@ -100,50 +100,4 @@ $(document).ready(function() {
         }        
     });
 	
-	//Plan
-	var value = $( '#planselect').val();
-	var bill="";
-	var msg="";
-	var price="";
-	if(value=="monthly_plan") {
-		msg = "Saving $250 a month";
-		price = "$800"+"/month + tax".sub();
-		bill = "$"+(800+(800*10/100));
-	} else if(value=="weekly_plan") {
-		msg = "Saving $45 a week";
-		price = "$200"+"/week + tax".sub();
-		bill = "$"+(200+(200*10/100));
-	} else {
-		msg = "Must try, you won't regret it!";
-		price = "$35"+"/day + tax".sub();
-		bill = "$"+(35+(35*10/100));
-	}
-	if (document.getElementById("plan-msg")) {
-		document.getElementById("plan-msg").innerHTML = msg;
-		document.getElementById("plan-price").innerHTML = price;
-		document.getElementById("total-bill").innerHTML = bill;
-	}
-	
-	$('select').on('change', function() {
-	  alert( $('option:selected', this).attr('KCal') );
-	});
-	
 });
-
-var headerValue;
-function setPrefRecom(buttonValue){
-	headerValue=buttonValue;
-}
-function getPrefRecom(){
-	if(headerValue="recom"){
-		document.getElementById("pref_recom").innerHTML="Recommendations";
-		document.getElementById("sub_update").disabled=true;
-	} else {
-		document.getElementById("pref_recom").innerHTML="My Preferences";
-		document.getElementById("sub_recom").disabled=true;
-	}
-}
-
-function addDiv(ev) {
-	console.log(ev);
-}

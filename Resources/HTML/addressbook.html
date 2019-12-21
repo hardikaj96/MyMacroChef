@@ -12,12 +12,24 @@
     <link rel="stylesheet" type="text/css" href="../../Vendors/CSS/ionicons.css">
     <link rel="stylesheet" type="text/css" href="../../Vendors/CSS/animate.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="../CSS/style.css">
     <link rel="stylesheet" type="text/css" href="../CSS/queries.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript" src="../../lib/axios/dist/axios.standalone.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/rollups/sha256.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/components/hmac.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/components/enc-base64.js"></script>
+	<script type="text/javascript" src="../../lib/url-template/url-template.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/sigV4Client.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/apiGatewayClient.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/simpleHttpClient.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/utils.js"></script>
+	<script type="text/javascript" src="../../apigClient.js"></script>
+	<script src="../JS/addressbook.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400">
     <title>MyMacroChef</title>
 
@@ -32,17 +44,18 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-    <header class="headerother">
+    <header class="headerother" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../CSS/IMG/hero.jpg)">
         <nav>
             <div class="row">
-                <img src="../IMG/logo-white.png" alt="Logo" class="logo" srcset="">
-                <img src="../IMG/logo.png" alt="Logo" class="logo-black" srcset="">
-                <ul class="main-nav js--main-nav">
+                <img src="../IMG/logo-white.png" alt="Logo" class="logo" srcset="" onclick="window.open('livetracking.html', '_self');">
+                <img src="../IMG/logo.png" alt="Logo" class="logo-black" srcset="" onclick="window.open('livetracking.html', '_self');">
+                <ul id="redirect-bar" class="main-nav js--main-nav">
                     <li><a href="profile.html">My Profile</a></li>
-					<li><a href="preferences.html">My Perferences</a></li>
+					<li><a href="preferences.html">My Preferences</a></li>
 					<li><a href="calendar.html">My Calendar</a></li>
                     <li><a href="addressbook.html">My Address Book</a></li>
-					<li><a href="biiling.html">My Billing Info</a></li>
+					<li><a href="billinginfo.html">My Billing Info</a></li>
+					<li><a href="livetracking.html">Live Tracking</a></li>
                     <li><a href="signout.html">Signout</a></li>
                 </ul>
                 <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
@@ -54,8 +67,11 @@
         <div class="row">
             <h2>My Address Book</h2>
         </div>
+		<div id="loading">
+		  <img id="loading-image" src="../IMG/loader.gif" alt="Loading..." />
+		</div>
         <div class="row">
-            <form target="billinginfo.html" mthod="post" action="#" class="contact-form">
+            <form mthod="post" onsubmit="return update();" class="contact-form">
 				<div class="row">
                     <div class="col span-1-of-3">
                         <label for="breakfast">Breakfast</label>
@@ -357,36 +373,6 @@
 						</div>
                     </div>
                 </div>
-				<script>
-					$( '#bfaddress-line1').change(function() {
-						document.getElementById("lnaddress-line1").value = document.getElementById("bfaddress-line1").value;
-						document.getElementById("snaddress-line1").value = document.getElementById("bfaddress-line1").value;
-						document.getElementById("dnaddress-line1").value = document.getElementById("bfaddress-line1").value;
-					});
-					$( '#bfaddress-line2').change(function() {
-						document.getElementById("lnaddress-line2").value = document.getElementById("bfaddress-line2").value;
-						document.getElementById("snaddress-line2").value = document.getElementById("bfaddress-line2").value;
-						document.getElementById("dnaddress-line2").value = document.getElementById("bfaddress-line2").value;
-					});
-					$( '#bfcity').change(function() {
-						document.getElementById("lncity").value = document.getElementById("bfcity").value;
-						document.getElementById("sncity").value = document.getElementById("bfcity").value;
-						document.getElementById("dncity").value = document.getElementById("bfcity").value;
-					});
-					$( '#bfregion').change(function() {
-						document.getElementById("lnregion").value = document.getElementById("bfregion").value;
-						document.getElementById("snregion").value = document.getElementById("bfregion").value;
-						document.getElementById("dnregion").value = document.getElementById("bfregion").value;
-					});
-					$( '#bfpostal-code').change(function() {
-						document.getElementById("lnpostal-code").value = document.getElementById("bfpostal-code").value;
-						document.getElementById("snpostal-code").value = document.getElementById("bfpostal-code").value;
-						document.getElementById("dnpostal-code").value = document.getElementById("bfpostal-code").value;
-					});
-					$( '#bfcountry').change(function() {
-						$("#lncountry,#sncountry,#dncountry").val(this.value);
-					});
-				</script>
 				<div class="row">
                     <div class="col span-1-of-3">
                         <label for="lunch">Lunch</label>
@@ -1288,7 +1274,9 @@
 						</div>
                     </div>
                 </div><br>
-				
+				<div class="row">
+					<p align="center" id="submitnote" hidden>User's address book has been updated</p>
+				</div>
                 <div class="row">
                     <div class="col span-1-of-3">
                         <label for="">&nbsp;</label>
@@ -1332,8 +1320,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../../Vendors/JS/jquery.waypoints.min.js"></script>
-    <script src="../JS/script.js"></script>
 </body>
 </html>

@@ -21,6 +21,17 @@
     <script src='../calendar/daygrid/main.js'></script>
     <script src='../calendar/timegrid/main.js'></script>
 	<script src='../calendar/interaction/main.js'></script>
+	<script type="text/javascript" src="../../lib/axios/dist/axios.standalone.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/rollups/sha256.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/components/hmac.js"></script>
+	<script type="text/javascript" src="../../lib/CryptoJS/components/enc-base64.js"></script>
+	<script type="text/javascript" src="../../lib/url-template/url-template.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/sigV4Client.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/apiGatewayClient.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/simpleHttpClient.js"></script>
+	<script type="text/javascript" src="../../lib/apiGatewayCore/utils.js"></script>
+	<script type="text/javascript" src="../../apigClient.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,300i,400">
     <title>MyMacroChef</title>
 
@@ -33,395 +44,22 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="..\Favicons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-	
-	<script>
-
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-			plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
-			editable: true,
-			defaultView: 'timeGridWeek',
-			validRange: {
-				start: '2019-11-17',
-				end: '2019-11-24'
-			},
-			header: {
-			  left: 'prev,next today',
-			  center: 'title',
-			  right: 'dayGridMonth,timeGridWeek,timeGridDay'
-			},
-			events: [
-			  {
-				title: 'Breakfast',
-				start: '2019-11-17T07:00:00',
-				end: '2019-11-17T08:00:00',
-				constraint: 'breakfasttime'
-			  },
-			  {
-				groupId: 'breakfasttime',
-				start: '2019-11-17T07:00:00',
-				end: '2019-11-17T10:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Breakfast',
-				start: '2019-11-18T07:00:00',
-				end: '2019-11-18T08:00:00',
-				constraint: 'breakfasttime'
-			  },
-			  {
-				groupId: 'breakfasttime',
-				start: '2019-11-18T07:00:00',
-				end: '2019-11-18T10:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Breakfast',
-				start: '2019-11-19T07:00:00',
-				end: '2019-11-19T08:00:00',
-				constraint: 'breakfasttime'
-			  },
-			  {
-				groupId: 'breakfasttime',
-				start: '2019-11-19T07:00:00',
-				end: '2019-11-19T10:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Breakfast',
-				start: '2019-11-20T07:00:00',
-				end: '2019-11-20T08:00:00',
-				constraint: 'breakfasttime'
-			  },
-			  {
-				groupId: 'breakfasttime',
-				start: '2019-11-20T07:00:00',
-				end: '2019-11-20T10:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Breakfast',
-				start: '2019-11-21T07:00:00',
-				end: '2019-11-21T08:00:00',
-				constraint: 'breakfasttime'
-			  },
-			  {
-				groupId: 'breakfasttime',
-				start: '2019-11-21T07:00:00',
-				end: '2019-11-21T10:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Breakfast',
-				start: '2019-11-22T07:00:00',
-				end: '2019-11-22T08:00:00',
-				constraint: 'breakfasttime'
-			  },
-			  {
-				groupId: 'breakfasttime',
-				start: '2019-11-22T07:00:00',
-				end: '2019-11-22T10:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Breakfast',
-				start: '2019-11-23T07:00:00',
-				end: '2019-11-23T08:00:00',
-				constraint: 'breakfasttime'
-			  },
-			  {
-				groupId: 'breakfasttime',
-				start: '2019-11-23T07:00:00',
-				end: '2019-11-23T10:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Lunch',
-				start: '2019-11-17T12:00:00',
-				end: '2019-11-17T13:00:00',
-				constraint: 'lunchtime'
-			  },
-			  {
-				groupId: 'lunchtime',
-				start: '2019-11-17T12:00:00',
-				end: '2019-11-17T15:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Lunch',
-				start: '2019-11-18T12:00:00',
-				end: '2019-11-18T13:00:00',
-				constraint: 'lunchtime'
-			  },
-			  {
-				groupId: 'lunchtime',
-				start: '2019-11-18T12:00:00',
-				end: '2019-11-18T15:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Lunch',
-				start: '2019-11-19T12:00:00',
-				end: '2019-11-19T13:00:00',
-				constraint: 'lunchtime'
-			  },
-			  {
-				groupId: 'lunchtime',
-				start: '2019-11-19T12:00:00',
-				end: '2019-11-19T15:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Lunch',
-				start: '2019-11-20T12:00:00',
-				end: '2019-11-20T13:00:00',
-				constraint: 'lunchtime'
-			  },
-			  {
-				groupId: 'lunchtime',
-				start: '2019-11-20T12:00:00',
-				end: '2019-11-20T15:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Lunch',
-				start: '2019-11-21T12:00:00',
-				end: '2019-11-21T13:00:00',
-				constraint: 'lunchtime'
-			  },
-			  {
-				groupId: 'lunchtime',
-				start: '2019-11-21T12:00:00',
-				end: '2019-11-21T15:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Lunch',
-				start: '2019-11-22T12:00:00',
-				end: '2019-11-22T13:00:00',
-				constraint: 'lunchtime'
-			  },
-			  {
-				groupId: 'lunchtime',
-				start: '2019-11-22T12:00:00',
-				end: '2019-11-22T15:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Lunch',
-				start: '2019-11-23T12:00:00',
-				end: '2019-11-23T13:00:00',
-				constraint: 'lunchtime'
-			  },
-			  {
-				groupId: 'lunchtime',
-				start: '2019-11-23T12:00:00',
-				end: '2019-11-23T15:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Snack',
-				start: '2019-11-17T16:00:00',
-				end: '2019-11-17T17:00:00',
-				constraint: 'snacktime'
-			  },
-			  {
-				groupId: 'snacktime',
-				start: '2019-11-17T16:00:00',
-				end: '2019-11-17T18:30:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Snack',
-				start: '2019-11-18T16:00:00',
-				end: '2019-11-18T17:00:00',
-				constraint: 'snacktime'
-			  },
-			  {
-				groupId: 'snacktime',
-				start: '2019-11-18T16:00:00',
-				end: '2019-11-18T18:30:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Snack',
-				start: '2019-11-19T16:00:00',
-				end: '2019-11-19T17:00:00',
-				constraint: 'snacktime'
-			  },
-			  {
-				groupId: 'snacktime',
-				start: '2019-11-19T16:00:00',
-				end: '2019-11-19T18:30:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Snack',
-				start: '2019-11-20T16:00:00',
-				end: '2019-11-20T17:00:00',
-				constraint: 'snacktime'
-			  },
-			  {
-				groupId: 'snacktime',
-				start: '2019-11-20T16:00:00',
-				end: '2019-11-20T18:30:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Snack',
-				start: '2019-11-21T16:00:00',
-				end: '2019-11-21T17:00:00',
-				constraint: 'snacktime'
-			  },
-			  {
-				groupId: 'snacktime',
-				start: '2019-11-21T16:00:00',
-				end: '2019-11-21T18:30:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Snack',
-				start: '2019-11-22T16:00:00',
-				end: '2019-11-22T17:00:00',
-				constraint: 'snacktime'
-			  },
-			  {
-				groupId: 'snacktime',
-				start: '2019-11-22T16:00:00',
-				end: '2019-11-22T18:30:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Snack',
-				start: '2019-11-23T16:00:00',
-				end: '2019-11-23T17:00:00',
-				constraint: 'snacktime'
-			  },
-			  {
-				groupId: 'snacktime',
-				start: '2019-11-23T16:00:00',
-				end: '2019-11-23T18:30:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Dinner',
-				start: '2019-11-17T19:00:00',
-				end: '2019-11-17T20:00:00',
-				constraint: 'dinnertime'
-			  },
-			  {
-				groupId: 'dinnertime',
-				start: '2019-11-17T19:00:00',
-				end: '2019-11-17T22:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Dinner',
-				start: '2019-11-18T19:00:00',
-				end: '2019-11-18T20:00:00',
-				constraint: 'dinnertime'
-			  },
-			  {
-				groupId: 'dinnertime',
-				start: '2019-11-18T19:00:00',
-				end: '2019-11-18T22:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Dinner',
-				start: '2019-11-19T19:00:00',
-				end: '2019-11-19T20:00:00',
-				constraint: 'dinnertime'
-			  },
-			  {
-				groupId: 'dinnertime',
-				start: '2019-11-19T19:00:00',
-				end: '2019-11-19T22:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Dinner',
-				start: '2019-11-20T19:00:00',
-				end: '2019-11-20T20:00:00',
-				constraint: 'dinnertime'
-			  },
-			  {
-				groupId: 'dinnertime',
-				start: '2019-11-20T19:00:00',
-				end: '2019-11-20T22:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Dinner',
-				start: '2019-11-21T19:00:00',
-				end: '2019-11-21T20:00:00',
-				constraint: 'dinnertime'
-			  },
-			  {
-				groupId: 'dinnertime',
-				start: '2019-11-21T19:00:00',
-				end: '2019-11-21T22:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Dinner',
-				start: '2019-11-22T19:00:00',
-				end: '2019-11-22T20:00:00',
-				constraint: 'dinnertime'
-			  },
-			  {
-				groupId: 'dinnertime',
-				start: '2019-11-22T19:00:00',
-				end: '2019-11-22T22:00:00',
-				rendering: 'background'
-			  },
-			  {
-				title: 'Dinner',
-				start: '2019-11-23T19:00:00',
-				end: '2019-11-23T20:00:00',
-				constraint: 'dinnertime'
-			  },
-			  {
-				groupId: 'dinnertime',
-				start: '2019-11-23T19:00:00',
-				end: '2019-11-23T22:00:00',
-				rendering: 'background'
-			  }
-			],
-			dateClick: function(info) {
-				alert('Clicked on: ' + info.dateStr);
-				alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-				alert('Current view: ' + info.view.type);
-				// change the day's background color just for fun
-				info.dayEl.style.backgroundColor = 'red';
-			},
-			eventDrop: function( event ) { 
-				if((event.event.start.getDate() != event.oldEvent.start.getDate()) || (event.event.start.getMonth() != event.oldEvent.start.getMonth())) {
-					event.revert();             
-				}           
-			}
-		  });
-
-	  calendar.render();
-      });
-
-    </script>
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="../JS/calendar.js"></script>
 </head>
 <body>
-    <header class="headerother">
+    <header class="headerother" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(../CSS/IMG/hero.jpg)">
         <nav>
             <div class="row">
-                <img src="../IMG/logo-white.png" alt="Logo" class="logo" srcset="">
-                <img src="../IMG/logo.png" alt="Logo" class="logo-black" srcset="">
-                <ul class="main-nav js--main-nav">
+                <img src="../IMG/logo-white.png" alt="Logo" class="logo" srcset="" onclick="window.open('livetracking.html', '_self');">
+                <img src="../IMG/logo.png" alt="Logo" class="logo-black" srcset="" onclick="window.open('livetracking.html', '_self');">
+                <ul id="redirect-bar" class="main-nav js--main-nav">
                     <li><a href="profile.html">My Profile</a></li>
-					<li><a href="preferences.html">My Perferences</a></li>
+					<li><a href="preferences.html">My Preferences</a></li>
 					<li><a href="calendar.html">My Calendar</a></li>
                     <li><a href="addressbook.html">My Address Book</a></li>
-					<li><a href="biiling.html">My Billing Info</a></li>
+					<li><a href="billinginfo.html">My Billing Info</a></li>
+					<li><a href="livetracking.html">Live Tracking</a></li>
                     <li><a href="signout.html">Signout</a></li>
                 </ul>
                 <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
@@ -432,17 +70,23 @@
         <div class="row">
             <h2>My Calendar</h2>
         </div><br>
-            <form target="addressbook.html" mthod="post" action="#">
-				<div id='calendar'></div>
-				<div class="row">
-                    <div class="col span-1-of-3">
-                        <label for="">&nbsp;</label>
-                    </div>
-                    <div class="col span-2-of-3">
-                        <input class="submit-button" type="submit" value="Update!">
-                    </div>
-                </div>
-			</form>
+		<div id="loading">
+		  <img id="loading-image" src="../IMG/loader.gif" alt="Loading..." />
+		</div>
+		<form mthod="post" onsubmit="return update();">
+			<div id='calendar'></div><br>
+			<div class="row">
+				<p align="center" id="submitnote" hidden>User's calendar has been updated</p>
+			</div>
+			<div class="row">
+				<div class="col span-1-of-3">
+					<label for="">&nbsp;</label>
+				</div>
+				<div class="col span-2-of-3">
+					<input id="update-button" class="submit-button" type="submit" value="Update!">
+				</div>
+			</div>
+		</form>
 	</section>
     <footer>
         <div class="row">

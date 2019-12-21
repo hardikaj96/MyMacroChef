@@ -155,7 +155,8 @@ a:active {
 
 .btn:link, 
 .btn:visited,
-input[type=submit] {
+input[type=submit],
+input[type=button] {
     display: inline-block;
     padding: 10px 30px;
     font-weight: 300;
@@ -172,9 +173,21 @@ input[type=submit] {
 	transform: translateX(-50%)
 }
 
+.delivery-button {
+	top: 30%;
+	position: absolute;
+	right: 2%;
+	background-color: #e67e22;
+    border: 1px solid #e67e22;
+    color: #fff;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%)
+}
+
 .btn-full:link, 
 .btn-full:visited,
-input[type=submit] {
+input[type=submit],
+input[type=button] {
     background-color: #e67e22;
     border: 1px solid #e67e22;
     color: #fff;
@@ -190,7 +203,9 @@ input[type=submit] {
 .btn:hover,
 .btn:active,
 input[type=submit]:hover,
-input[type=submit]:active {
+input[type=submit]:active,
+input[type=button]:hover,
+input[type=button]:active {
     background-color: #cf6d17;
 }
 
@@ -210,8 +225,8 @@ input[type=submit]:active {
 /* ------------------------------------------------- */
 
 .headermain {
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(img/hero.jpg);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/hero.jpg);
+    /*background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(img/hero.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/hero.jpg);*/
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -219,8 +234,8 @@ input[type=submit]:active {
 }
 
 .headerother {
-	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(img/hero.jpg);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/hero.jpg);
+	/*background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.7))), url(img/hero.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(img/hero.jpg);*/
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -270,7 +285,7 @@ logo-black {
     color: #fff;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 90%;
+    font-size: 70%;
     border-bottom: 2px solid transparent;
     -webkit-transform: border-bottom 0.2s;
             transform: border-bottom 0.2s;
@@ -737,4 +752,28 @@ footer p {
 
 .bread-select {
 	padding-left: 5%;
+}
+
+#loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #fff;
+   z-index: 99;
+   text-align: center;
+}
+
+#loading-image {
+  position:fixed;
+  top: 40%;
+  left: 40%;
+  z-index: 100;
+}
+
+img {
+	cursor: pointer;
 }
