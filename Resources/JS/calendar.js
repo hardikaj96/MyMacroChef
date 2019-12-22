@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (window.localStorage.getItem('access-token')==null || window.localStorage.getItem('access-token')=='null')
 		window.location = "signout.html";
 	apigClient = apigClientFactory.newClient({
-        accessKey: 'AKIA2TNUTONJIWBEEQ6W',
-        secretKey: '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',
+        accessKey: 'accessKey',
+        secretKey: 'secretKey',
       });
     var body = {
         username : userid

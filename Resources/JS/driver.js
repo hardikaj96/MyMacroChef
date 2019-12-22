@@ -16,8 +16,8 @@ $( document ).ready(function() {
 		window.location = "signout.html";
 	stream_name = 'location-stream';
 	var credentials = new AWS.Credentials();
-	credentials.accessKeyId = 'AKIAX7DBGCU3GJHQZBNU';
-	credentials.secretAccessKey = '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';
+	credentials.accessKeyId = 'accessKey';
+	credentials.secretAccessKey = 'secretKey';
 	AWS.config.region = 'us-east-1';
 	AWS.config.credentials = credentials;
     console.log( "ready!" );
@@ -50,8 +50,8 @@ $( document ).ready(function() {
 
 function populateUsers() {
 	apigClient = apigClientFactory.newClient({
-        accessKey: 'AKIA2TNUTONJIWBEEQ6W',
-        secretKey: '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',
+        accessKey: 'accessKey',
+        secretKey: 'secretKey',
       });
     var body = {
         key : "Hello"
