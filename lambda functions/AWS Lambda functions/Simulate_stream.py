@@ -36,7 +36,7 @@ def put_to_stream(origin, dest):
                         
 def simulate_driving(origin, dest):
     autoDriveSteps = []
-    gmaps = googlemaps.Client(key='AIzaSyCBpghfpE8DihmCLju6SG-d3k8XlxJo484')
+    gmaps = googlemaps.Client(key='Key')
     
     #Destination Geocode
     dest_geocode = gmaps.geocode(dest)[0]["geometry"]["location"]

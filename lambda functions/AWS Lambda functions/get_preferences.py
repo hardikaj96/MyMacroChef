@@ -10,8 +10,8 @@ from boto3.dynamodb.conditions import Key, Attr
 # grab environment variables
 
 runtime= boto3.client('runtime.sagemaker',
-aws_access_key_id='AKIAX7DBGCU3GJHQZBNU',
-aws_secret_access_key='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')
+aws_access_key_id='accessKey',
+aws_secret_access_key='secretKey')
 s3 = boto3.client('s3')
 def lambda_handler(event, context):
     print(event)

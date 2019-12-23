@@ -67,10 +67,10 @@ def get_user_address(user_id):
     
 def send_email(email, meal_type):
     client = boto3.client('ses',
-    aws_access_key_id='AKIAX7DBGCU3GJHQZBNU',
-    aws_secret_access_key='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')
+    aws_access_key_id='accessKey',
+    aws_secret_access_key='secretKey')
     response = client.send_email(
-        Source='hardikaj96@gmail.com',
+        Source='sourceEmailId',
         Destination={
             'ToAddresses': [
                 email,

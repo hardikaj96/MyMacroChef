@@ -85,18 +85,18 @@ def put_user_profile(user_id,first_name,last_name,age,sex,weight,height,phone, a
     
 def send_notification(first_name,last_name,phone):
     sns = boto3.client('sns',
-    aws_access_key_id='AKIAX7DBGCU3GJHQZBNU',
-    aws_secret_access_key='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')
+    aws_access_key_id='accessKey',
+    aws_secret_access_key='secretKey')
     response = sns.publish(PhoneNumber='+1'+phone,
     Message='Welcome '+first_name+' '+last_name+' to MyMacroChef, you will be further notified on this number.')
     print(response)
     
 def send_email(first_name,last_name,email):
     client = boto3.client('ses',
-    aws_access_key_id='AKIAX7DBGCU3GJHQZBNU',
-    aws_secret_access_key='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')
+    aws_access_key_id='accessKey',
+    aws_secret_access_key='secretKey')
     response = client.send_email(
-        Source='hardikaj96@gmail.com',
+        Source='sourceEmailId',
         Destination={
             'ToAddresses': [
                 email,
